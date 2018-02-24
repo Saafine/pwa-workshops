@@ -2,7 +2,7 @@ const { assets } = global.serviceWorkerOption;
 
 const CACHE_NAME = "v1";
 const URLS_TO_CACHE = self.serviceWorkerOption.assets;
-const URLS_TO_IGNORE = ["chrome-extension", "sockjs-node", "/wines"];
+const URLS_TO_IGNORE = ["chrome-extension", "sockjs-node"];
 
 self.addEventListener("install", event => {
   self.skipWaiting();
