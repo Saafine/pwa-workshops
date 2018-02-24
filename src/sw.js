@@ -1,79 +1,56 @@
-/* eslint-disable no-undef,no-restricted-globals */
-const { assets } = serviceWorkerOption;
-const CACHE_NAME = new Date().getTime().toString();
+const { assets } = global.serviceWorkerOption;
 
-console.log(CACHE_NAME);
+const CACHE_NAME = "v1";
+const URLS_TO_CACHE = self.serviceWorkerOption.assets;
+const URLS_TO_IGNORE = ["chrome-extension", "sockjs-node", "/wines"];
 
-/**
- * Cache all bundle assets (index.html, script.js, styles, images) and save to cache.api
- */
-self.addEventListener('install', (event) => {
+self.addEventListener("install", event => {
+  self.skipWaiting();
+
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(assets);
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(URLS_TO_CACHE);
     })
   );
 });
 
-/**
- * Remove old caches (not matching our current cache name)
- */
-self.addEventListener('activate', (event) => {
-  const cacheWhitelist = [CACHE_NAME];
+self.addEventListener("activate", event => {
   event.waitUntil(
-    caches.keys().then((keyList) => {
-      return Promise.all(keyList.map((key) => {
-        if (cacheWhitelist.indexOf(key) === -1) {
-          console.log('deleting cache with key:', key);
-          return caches.delete(key);
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+      );
+    })
+  );
+});
+
+self.addEventListener("fetch", event => {
+  const request = event.request;
+
+  event.respondWith(
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.match(request).then(response => {
+        if (response) {
+          return response;
         }
-      }));
-    }));
+
+        if (!navigator.isOnline && request.headers.get('accept').includes('text/html')) {
+          return cache.match(new Request("/index.html"));
+        }
+
+        return fetchAndUpdate(request);
+      });
+    })
+  );
 });
 
-/**
- * Intercept all requests and:
- * - return response from cache if found
- * - return index.html fallback from sub-routes
- * - ignore requests and response coming from our dev server and chrome extensions
- * - fetch other requests and cache them if needed
- */
-self.addEventListener('fetch', function(evt) {
-  if (evt.request.url.includes('sockjs-node')) {
-    // console.log('blocking sockjs-node');
-    return;
-  }
+function fetchAndUpdate(request) {
+  return caches.open(CACHE_NAME).then(cache => {
+    return fetch(request).then(response => {
+      if (!response.url) return response;
 
-  if (evt.request.url.includes('chrome-extension')) {
-    // console.log('blocking chrome-extension');
-    return;
-  }
-  
-  // console.log(evt.request.url);
-  // console.log('The service worker is serving the asset.');
-  evt.respondWith(fromCache(evt.request));
-  evt.waitUntil(update(evt.request));
-});
-
-function fromCache(request) {
-  return caches.open(CACHE_NAME).then(function(cache) {
-    return cache.match(request).then(function(matching) {
-
-      return matching || Promise.reject('no-match');
-    }).catch((error) => {
-      // console.log(error);
-    });
-  }).catch((error) => {
-
-  });
-}
-
-function update(request) {
-  return caches.open(CACHE_NAME).then(function(cache) {
-    return fetch(request).then(function(response) {
-      return cache.put(request, response);
-    }).catch((err) => {
-      
+      cache.put(request, response.clone());
+      return response;
     });
   });
 }
