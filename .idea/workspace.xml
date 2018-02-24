@@ -23,8 +23,8 @@
       <file leaf-file-name="sw.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sw.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="114">
-              <caret line="31" column="3" lean-forward="true" selection-start-line="31" selection-start-column="3" selection-end-line="31" selection-end-column="3" />
+            <state relative-caret-position="146">
+              <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="62" selection-end-column="1" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -271,12 +271,12 @@
       <option name="presentableId" value="Default" />
       <updated>1519464850971</updated>
       <workItem from="1519464852301" duration="444000" />
-      <workItem from="1519465315890" duration="8624000" />
+      <workItem from="1519465315890" duration="9882000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9068000" />
+    <option name="totallyTimeSpent" value="10326000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -506,7 +506,7 @@
         <state relative-caret-position="352">
           <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding>
-            <element signature="e#0#22#0" expanded="true" />
+            <element signature="e#0#22#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -529,8 +529,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sw.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="31" column="3" lean-forward="true" selection-start-line="31" selection-start-column="3" selection-end-line="31" selection-end-column="3" />
+        <state relative-caret-position="146">
+          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="62" selection-end-column="1" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
