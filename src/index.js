@@ -13,12 +13,12 @@ import runtime from 'serviceworker-webpack-plugin/lib/runtime';
 /**
  * Check if serviceWorker is supported
  */
-// if ('serviceWorker' in navigator) {
-//   console.log('Registering a service worker...');
-//   const registration = runtime.register();
-// } else {
-//   console.log('Failure to register a service worker!');
-// }
+if ('serviceWorker' in navigator) {
+  console.log('Registering a service worker...');
+  const registration = runtime.register();
+} else {
+  console.log('Failure to register a service worker!');
+}
 
 
 render(
