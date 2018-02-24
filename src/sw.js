@@ -1,10 +1,10 @@
 const { assets } = global.serviceWorkerOption;
 
-const CACHE_NAME = "v1";
+const CACHE_NAME = 'v1';
 const URLS_TO_CACHE = self.serviceWorkerOption.assets;
-const URLS_TO_IGNORE = ["chrome-extension", "sockjs-node"];
+const URLS_TO_IGNORE = ['chrome-extension', 'sockjs-node'];
 
-self.addEventListener("install", event => {
+self.addEventListener('install', event => {
   self.skipWaiting();
 
   event.waitUntil(
@@ -14,7 +14,7 @@ self.addEventListener("install", event => {
   );
 });
 
-self.addEventListener("activate", event => {
+self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys => {
       return Promise.all(
@@ -24,7 +24,7 @@ self.addEventListener("activate", event => {
   );
 });
 
-self.addEventListener("fetch", event => {
+self.addEventListener('fetch', event => {
   const request = event.request;
 
   event.respondWith(
@@ -35,7 +35,7 @@ self.addEventListener("fetch", event => {
         }
 
         if (!navigator.isOnline && request.headers.get('accept').includes('text/html')) {
-          return cache.match(new Request("/index.html"));
+          return cache.match(new Request('/index.html'));
         }
 
         return fetchAndUpdate(request);
@@ -54,3 +54,4 @@ function fetchAndUpdate(request) {
     });
   });
 }
+

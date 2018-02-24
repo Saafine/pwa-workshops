@@ -8,6 +8,7 @@ import List from './List';
 import EmptyPage from './EmptyPage';
 import TabBar from './TabBar';
 import ItemShow from './ItemShow';
+import OnlineNotification from './OnlineNotification';
 
 class App extends Component {
   state = {
@@ -51,6 +52,7 @@ class App extends Component {
     return (
       <Router>
         <Fragment>
+          <OnlineNotification></OnlineNotification>
           {this.renderContent()}
         </Fragment>
       </Router>
