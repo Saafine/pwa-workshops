@@ -39,6 +39,17 @@ self.addEventListener('activate', (event) => {
  * - fetch other requests and cache them if needed
  */
 self.addEventListener('fetch', function(evt) {
+  if (evt.request.url.includes('sockjs-node')) {
+    // console.log('blocking sockjs-node');
+    return;
+  }
+
+  if (evt.request.url.includes('chrome-extension')) {
+    // console.log('blocking chrome-extension');
+    return;
+  }
+  
+  // console.log(evt.request.url);
   // console.log('The service worker is serving the asset.');
   evt.respondWith(fromCache(evt.request));
   evt.waitUntil(update(evt.request));
@@ -47,10 +58,13 @@ self.addEventListener('fetch', function(evt) {
 function fromCache(request) {
   return caches.open(CACHE_NAME).then(function(cache) {
     return cache.match(request).then(function(matching) {
+
       return matching || Promise.reject('no-match');
     }).catch((error) => {
       // console.log(error);
     });
+  }).catch((error) => {
+
   });
 }
 
@@ -58,6 +72,8 @@ function update(request) {
   return caches.open(CACHE_NAME).then(function(cache) {
     return fetch(request).then(function(response) {
       return cache.put(request, response);
+    }).catch((err) => {
+      
     });
   });
 }
