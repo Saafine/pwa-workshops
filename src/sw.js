@@ -31,9 +31,6 @@ self.addEventListener('activate', (event) => {
     }));
 });
 
-self.addEventListener('fetch', (event) => {
-
-});
 /**
  * Intercept all requests and:
  * - return response from cache if found
@@ -41,3 +38,24 @@ self.addEventListener('fetch', (event) => {
  * - ignore requests and response coming from our dev server and chrome extensions
  * - fetch other requests and cache them if needed
  */
+self.addEventListener('fetch', function(evt) {
+console.log('The service worker is serving the asset.');
+evt.respondWith(fromCache(evt.request));
+evt.waitUntil(update(evt.request));
+});
+
+function fromCache(request) {
+  return caches.open(CACHE_NAME).then(function (cache) {
+    return cache.match(request).then(function (matching) {
+      return matching || Promise.reject('no-match');
+    });
+  });
+}
+
+function update(request) {
+  return caches.open(CACHE_NAME).then(function (cache) {
+    return fetch(request).then(function (response) {
+      return cache.put(request, response);
+    });
+  });
+}
