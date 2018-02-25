@@ -1,3 +1,37 @@
 @import './styles/base/reset';
 @import './styles/base/layout';
 @import './styles/base/fonts';
+
+$anim-time: 1s;
+$anim-offset: 50px;
+
+.fade-enter {
+  opacity: 0;
+  z-index: 1;
+}
+
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transition: opacity 250ms ease-in;
+}
+
+//.fade-enter {
+//  opacity: 0;
+//  transform: translateY($anim-offset);
+//}
+//
+//.fade-enter.fade-enter-active {
+//  opacity: 1;
+//  transform: translateY(0);
+//  transition: all $anim-time $anim-time ease;
+//}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit.fade-exit-active {
+  opacity: 0;
+  transform: translateY($anim-offset);
+  transition: all $anim-time 0s ease;
+}

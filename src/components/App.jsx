@@ -1,4 +1,6 @@
 import React, { Fragment, Component } from 'react';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+
 import {
   BrowserRouter as Router,
   Route,
@@ -24,7 +26,7 @@ class App extends Component {
       .then(res => res.json())
       .then(data => {
         this.setState({ wines: data });
-      })
+      });
 
   };
 
@@ -35,14 +37,22 @@ class App extends Component {
 
     return (
       <Fragment>
-        <Switch>
-          <Route exact path="/" component={() => <List items={this.state.wines} />} />
-          <Route path="/wine/:id" component={() => <ItemShow items={this.state.wines} />} />
-          <Route path="/wishlist" component={EmptyPage} />
-          <Route path="/cellar" component={EmptyPage} />
-          <Route path="/articles" component={EmptyPage} />
-          <Route path="/profile" component={EmptyPage} />
-        </Switch>
+        <Route
+          render={({ location }) => (
+            <TransitionGroup>
+              <CSSTransition key={location.key} classNames="fade" timeout={1000} appear mountOnEnter>
+                <Switch location={location}>
+                  <Route exact path="/" component={() => <List items={this.state.wines}/>}/>
+                  <Route path="/wine/:id" component={() => <ItemShow items={this.state.wines}/>}/>
+                  <Route path="/wishlist" component={EmptyPage}/>
+                  <Route path="/cellar" component={EmptyPage}/>
+                  <Route path="/articles" component={EmptyPage}/>
+                  <Route path="/profile" component={EmptyPage}/>
+                </Switch>
+              </CSSTransition>
+            </TransitionGroup>
+          )}>
+        </Route>
         <TabBar />
       </Fragment>
     );
@@ -52,7 +62,7 @@ class App extends Component {
     return (
       <Router>
         <Fragment>
-          <OnlineNotification></OnlineNotification>
+          <OnlineNotification/>
           {this.renderContent()}
         </Fragment>
       </Router>
