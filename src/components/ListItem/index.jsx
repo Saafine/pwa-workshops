@@ -3,6 +3,7 @@ import { string, number } from 'prop-types';
 import { Link } from 'react-router-dom';
 import ListRating from '../ListRating';
 import BottleSvg from '../../svg-components/Bottle';
+import Picture from '../Picture';
 import './style.scss';
 
 class ListItem extends PureComponent {
@@ -13,11 +14,7 @@ class ListItem extends PureComponent {
           <article>
             <section className="ListItem__main">
               <div className="ListItem__photo-container">
-                {this.props.image_url ? (
-                  <img className="ListItem__photo" src={this.props.image_url} alt={this.props.name} />
-                ) : (
-                  <BottleSvg className="ListItem__photo" />
-                )}
+                {this.props.image_url ? <Picture className="ListItem__photo" src={this.props.image_url} alt="picture"/> : <BottleSvg className="ListItem__photo"/> }
               </div>
 
               <div className="ListItem__description">
@@ -40,7 +37,7 @@ class ListItem extends PureComponent {
             </section>
 
             <footer className="ListItem__footer">
-              <ListRating className="ListItem__footer-item" rating={this.props.rating} votesCount={this.props.nr_of_ratings} />
+              <ListRating className="ListItem__footer-item" rating={this.props.rating} votesCount={this.props.nr_of_ratings}/>
 
               <Link to={`/wine/${this.props.id}`} className="ListItem__footer-item ListItem__footer-action">
                 buy (${this.props.price})
