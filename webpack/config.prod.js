@@ -5,6 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const paths = require('./paths');
+const CompressionPlugin = require('compression-webpack-plugin');
+const StyleExtHtmlWebpackPlugin = require('style-ext-html-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -105,6 +107,7 @@ module.exports = {
         comments: false,
       },
     }),
+    new StyleExtHtmlWebpackPlugin(),
     new webpack.HashedModuleIdsPlugin(),
     new ExtractTextPlugin({
       filename: 'style.css',
@@ -117,6 +120,13 @@ module.exports = {
     new ServiceWorkerWebpackPlugin({
       entry: paths.serviceWorker,
       excludes: ['_redirects'],
+    }),
+    new CompressionPlugin({
+      asset: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
+      threshold: 10240,
+      minRatio: 0.8,
     }),
   ],
 };
